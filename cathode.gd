@@ -47,7 +47,7 @@ func firebullet() -> void:
 	print(chamber)
 	var newBullet = bullet.instantiate()
 	get_tree().root.get_child(0).add_child(newBullet)
-	newBullet.global_position = $".".global_position
+	newBullet.global_position = $BulletPoint.global_position
 	newBullet.set_axis_velocity(Vector3(0,15,0))
 	chamber -= 1
 	if chamber > 0:
