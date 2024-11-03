@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://ea6bfmwkkjgd"]
+
+[ext_resource type="Script" path="res://beam.gd" id="1_20gy3"]
+[ext_resource type="Texture2D" uid="uid://d3tj1bfitkifh" path="res://beam_start.png" id="1_tq2yn"]
+[ext_resource type="Texture2D" uid="uid://bq3rhbfmuto85" path="res://beam_mid.png" id="2_0bwti"]
+
+[node name="Beam" type="Node3D"]
+script = ExtResource("1_20gy3")
+
+[node name="BeamStart" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+texture = ExtResource("1_tq2yn")
+
+[node name="BeamMid" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+texture = ExtResource("2_0bwti")

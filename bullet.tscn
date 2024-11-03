@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dj0jtvqvywxxt"]
 
-[ext_resource type="Texture2D" uid="uid://bl4mchufvkbca" path="res://core.png" id="1_8nqpi"]
+[ext_resource type="Texture2D" uid="uid://c1e3ym0a4c71p" path="res://bullet.png" id="1_71i7d"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_iwrvn"]
 radius = 0.075
@@ -12,8 +12,8 @@ collision_mask = 4
 gravity_scale = 0.0
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(0.15, 0, 0, 0, 0.5, 0, 0, 0, 0.15, 0, 0, 0)
-texture = ExtResource("1_8nqpi")
+transform = Transform3D(0.35, 0, 0, 0, 0.5, 0, 0, 0, 0.15, 0, 0, 0)
+texture = ExtResource("1_71i7d")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_iwrvn")

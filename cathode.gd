@@ -1,8 +1,11 @@
 extends CharacterBody3D
 
 var bullet = preload("res://bullet.tscn")
+var beam = preload("res://beam.tscn")
+var activeBeam: Node
 var chamber = 0
 var spinMult = 1
+var beamMult = 1
 
 func _physics_process(delta: float) -> void:
 	var directionX := Input.get_axis("ui_left", "ui_right")
@@ -10,13 +13,13 @@ func _physics_process(delta: float) -> void:
 	
 	#set_velocity(Vector3(directionX*400,directionY*400,0))
 	if directionX:
-		velocity.x = directionX * 3.0
+		velocity.x = directionX * 4.0 * beamMult
 	else:
-		velocity.x = move_toward(velocity.x, 0, 3.0)
+		velocity.x = move_toward(velocity.x, 0, 4.0 * beamMult)
 	if directionY:
-		velocity.y = directionY * 3.0
+		velocity.y = directionY * 4.0 * beamMult
 	else:
-		velocity.y = move_toward(velocity.y, 0, 3.0)
+		velocity.y = move_toward(velocity.y, 0, 4.0 * beamMult)
 	
 	move_and_slide()
 	
@@ -25,6 +28,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_accept"):
 		chamber = 3
 		spinMult = 3
+		$BeamHold.start()
 		if $BulletTime.time_left == 0:
 			chamber += 1
 			firebullet()
@@ -33,6 +37,9 @@ func _physics_process(delta: float) -> void:
 		#newBullet.global_position = $".".global_position
 		#newBullet.set_axis_velocity(Vector3(0,15,0))
 		#chamber -= 1
+	if Input.is_action_just_released("ui_accept") and activeBeam != null:
+		activeBeam.call_deferred("queue_free")
+		beamMult = 1
 
 func _process(delta: float) -> void:
 	#$Rings/Inner.rotate(Vector3(1,0.5,0),0.1*delta)
@@ -63,3 +70,12 @@ func firebullet() -> void:
 
 func _on_bullet_time_timeout() -> void:
 	firebullet()
+
+
+func _on_beam_hold_timeout() -> void:
+	if activeBeam == null and Input.is_action_pressed("ui_accept"):
+		var newBeam = beam.instantiate()
+		get_tree().root.get_child(0).add_child(newBeam)
+		newBeam.global_position = $BulletPoint.global_position
+		activeBeam = newBeam
+		beamMult = 0.5
