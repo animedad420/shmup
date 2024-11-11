@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://c3mkoosb7rb6m"]
+
+[ext_resource type="Texture2D" uid="uid://bx1cgfprxlefj" path="res://round.png" id="1_7vuqm"]
+[ext_resource type="Script" path="res://bullet.gd" id="1_87nud"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_8fc3g"]
+height = 0.5
+radius = 0.125
+
+[node name="Node3D" type="RigidBody3D"]
+collision_layer = 0
+collision_mask = 0
+gravity_scale = 0.0
+script = ExtResource("1_87nud")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("CylinderShape3D_8fc3g")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+texture = ExtResource("1_7vuqm")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 16
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("CylinderShape3D_8fc3g")

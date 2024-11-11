@@ -93,7 +93,18 @@ one_shot = true
 wait_time = 0.075
 one_shot = true
 
+[node name="BulletWait" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[node name="BulletLoad" type="Timer" parent="."]
+wait_time = 0.25
+one_shot = true
+
+[connection signal="health_depleted" from="." to="." method="_on_health_depleted"]
 [connection signal="area_entered" from="Cube/Area3D" to="." method="_on_area_3d_area_entered"]
 [connection signal="area_exited" from="Cube/Area3D" to="." method="_on_area_3d_area_exited"]
 [connection signal="timeout" from="FlashTime" to="." method="_on_flash_time_timeout"]
 [connection signal="timeout" from="BeamCheck" to="." method="_on_beam_check_timeout"]
+[connection signal="timeout" from="BulletWait" to="." method="_on_bullet_wait_timeout"]
+[connection signal="timeout" from="BulletLoad" to="." method="_on_bullet_load_timeout"]
