@@ -63,7 +63,7 @@ func firebullet() -> void:
 	var newBullet = bullet.instantiate()
 	get_tree().root.get_child(0).add_child(newBullet)
 	newBullet.global_position = $BulletPoint.global_position
-	newBullet.set_axis_velocity(Vector3(0,15,0))
+	newBullet.set_axis_velocity(Vector3(0,newBullet.speedY,0))
 	chamber -= 1
 	if chamber > 0:
 		$BulletTime.start()
@@ -78,4 +78,5 @@ func _on_beam_hold_timeout() -> void:
 		get_tree().root.get_child(0).add_child(newBeam)
 		newBeam.global_position = $BulletPoint.global_position
 		activeBeam = newBeam
+		newBeam.bulletPoint = $BulletPoint
 		beamMult = 0.5

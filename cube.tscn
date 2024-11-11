@@ -1,8 +1,16 @@
-[gd_scene load_steps=8 format=4 uid="uid://4sh5p4yk43wu"]
+[gd_scene load_steps=11 format=4 uid="uid://4sh5p4yk43wu"]
 
 [ext_resource type="Script" path="res://cube.gd" id="1_xxuvu"]
+[ext_resource type="Shader" path="res://fullwhite.gdshader" id="2_2sg17"]
 [ext_resource type="Texture2D" uid="uid://pb7s2bg15fsk" path="res://center.png" id="2_o08o3"]
 [ext_resource type="Material" uid="uid://c4e2x4xtvrmo" path="res://node_3d.tres" id="3_rh8vs"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_epvqf"]
+render_priority = 0
+shader = ExtResource("2_2sg17")
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/intensity = 0.0
+shader_parameter/tex = ExtResource("2_o08o3")
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ue43g"]
 height = 0.25
@@ -44,13 +52,19 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_hbevr")
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_dglka"]
+size = Vector3(0.45, 0.45, 0.45)
+
 [node name="Cube" type="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2465, 1.19377, 0)
+collision_layer = 0
+collision_mask = 0
 gravity_scale = 0.0
 script = ExtResource("1_xxuvu")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_epvqf")
 texture = ExtResource("2_o08o3")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -62,3 +76,24 @@ transform = Transform3D(0.225, 0, 0, 0, 0.225, 0, 0, 0, 0.225, 0, 0, 0)
 material_override = ExtResource("3_rh8vs")
 mesh = SubResource("ArrayMesh_ptotq")
 skeleton = NodePath("")
+
+[node name="Area3D" type="Area3D" parent="Cube"]
+transform = Transform3D(4.44444, 0, 0, 0, 4.44444, 0, 0, 0, 4.44444, 0, 0, 0)
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cube/Area3D"]
+shape = SubResource("BoxShape3D_dglka")
+
+[node name="FlashTime" type="Timer" parent="."]
+wait_time = 0.05
+one_shot = true
+
+[node name="BeamCheck" type="Timer" parent="."]
+wait_time = 0.075
+one_shot = true
+
+[connection signal="area_entered" from="Cube/Area3D" to="." method="_on_area_3d_area_entered"]
+[connection signal="area_exited" from="Cube/Area3D" to="." method="_on_area_3d_area_exited"]
+[connection signal="timeout" from="FlashTime" to="." method="_on_flash_time_timeout"]
+[connection signal="timeout" from="BeamCheck" to="." method="_on_beam_check_timeout"]

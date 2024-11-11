@@ -1,9 +1,18 @@
 extends Node3D
 
-func _process(delta: float) -> void:
-	global_position = get_node("/root/Node3D/Cathode/BulletPoint").global_position
+@export var damage: int
+@export var growFactor: float = 55
+@export var bulletPoint: Node
+var isBeam: bool = true
+
+func _physics_process(delta: float) -> void:
+	if bulletPoint != null:
+		global_position = bulletPoint.global_position
 	
-	$BeamMid.scale.y += 55
-	$BeamMid.position.y = 0.499+($BeamMid.scale.y/200)
+	$BeamMid.scale.y += growFactor
+	$BeamMid.position.y = 0.5+($BeamMid.scale.y/200)
+	$Area3D/CollisionBeamMid.shape.size.y += growFactor*0.01
+	$Area3D/CollisionBeamMid.position.y = 0.5+($BeamMid.scale.y/200)
 	print($BeamMid.position)
 	print($BeamMid.scale.y)
+	print($Area3D/CollisionBeamMid.shape.size.y)

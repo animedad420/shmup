@@ -1,8 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://ea6bfmwkkjgd"]
+[gd_scene load_steps=6 format=3 uid="uid://ea6bfmwkkjgd"]
 
 [ext_resource type="Script" path="res://beam.gd" id="1_20gy3"]
 [ext_resource type="Texture2D" uid="uid://d3tj1bfitkifh" path="res://beam_start.png" id="1_tq2yn"]
 [ext_resource type="Texture2D" uid="uid://bq3rhbfmuto85" path="res://beam_mid.png" id="2_0bwti"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_qtctv"]
+height = 0.5
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ltp1d"]
+resource_local_to_scene = true
+size = Vector3(1, 0.01, 0.5)
 
 [node name="Beam" type="Node3D"]
 script = ExtResource("1_20gy3")
@@ -14,3 +21,15 @@ texture = ExtResource("1_tq2yn")
 [node name="BeamMid" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 texture = ExtResource("2_0bwti")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionBeamStart" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.5, 0)
+shape = SubResource("CylinderShape3D_qtctv")
+
+[node name="CollisionBeamMid" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_ltp1d")
