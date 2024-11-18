@@ -80,3 +80,7 @@ func _on_beam_hold_timeout() -> void:
 		activeBeam = newBeam
 		newBeam.bulletPoint = $BulletPoint
 		beamMult = 0.5
+
+
+func _on_area_3d_area_entered(area: Area3D) -> void:
+	call_deferred("queue_free")

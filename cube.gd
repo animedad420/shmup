@@ -1,11 +1,14 @@
 extends RigidBody3D
 
+var manager: Manager
 var inBeam: Node
 var health: int = 20
 signal health_depleted
 var bullet = preload("res://enemybullet.tscn")
 var direction: Vector3
 var chamber = 0
+var player: Node:
+	get: return manager.player if manager else null
 
 func _physics_process(delta: float) -> void:
 	$Cube.rotate_x(1.2*delta)
@@ -68,8 +71,13 @@ func firebullet():
 		var newBullet = bullet.instantiate()
 		get_tree().root.get_child(0).add_child(newBullet)
 		newBullet.global_position = $".".global_position
-		direction = (get_parent().get_node("Cathode").global_position - $".".global_position).normalized()
+		if player != null:
+			direction = (player.global_position - $".".global_position).normalized()
+		else: direction = Vector3(0,-1,0)
 		
 		newBullet.set_axis_velocity(direction*1.8)
 		chamber -= 1
 		$BulletLoad.start()
+
+func update_player(node):
+	player = node
