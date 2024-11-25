@@ -5,18 +5,49 @@ var inBeam: Node
 var health: int = 20
 signal health_depleted
 var bullet = preload("res://enemybullet.tscn")
+var myDirection: Vector3
 var direction: Vector3
 var chamber = 0
+var speed = 2
 var player: Node:
 	get: return manager.player if manager else null
+	
+var movementQueue = {}
+var movementOrder: int = 1
+var movementActive: bool
+
+func _ready() -> void:
+	movementQueue = {
+		1:{"IDLE":4.0},
+		2:{"MOVE":Vector3(3,0,1.2)},
+		3:{"IDLE":4.0},
+		4:{"MOVE":Vector3(-3,0,1.2)},
+		5:{"IDLE":0.5},
+		6:{"MOVE":Vector3(3,0,0.4)},
+		7:{"MOVE":Vector3(-1,-2,0.4)},
+		8:{"MOVE":Vector3(3,0,0.4)}
+	}
 
 func _physics_process(delta: float) -> void:
 	$Cube.rotate_x(1.2*delta)
 	$Cube.rotate_y(0.6*delta)
 	$Cube.rotate_z(-0.8*delta)
-	
-	
+	set_axis_velocity(myDirection*speed)
 
+func _process(delta: float) -> void:
+	if !movementActive:
+		if movementQueue.has(movementOrder):
+			if movementQueue[movementOrder].has("IDLE"):
+				#print(movementQueue[movementOrder]["IDLE"])
+				$IdleTime.start(movementQueue[movementOrder]["IDLE"])
+			if movementQueue[movementOrder].has("MOVE"):
+				var pos = $".".global_position
+				pos.x += movementQueue[movementOrder]["MOVE"].x
+				pos.y += movementQueue[movementOrder]["MOVE"].y
+				$IdleTime.start(movementQueue[movementOrder]["MOVE"].z)
+				myDirection = (pos - $".".global_position).normalized()
+			movementActive = true
+		else: movementOrder = 1
 
 func _on_area_3d_area_entered(area: Area3D) -> void:
 	var attacker = area.get_parent()
@@ -81,3 +112,11 @@ func firebullet():
 
 func update_player(node):
 	player = node
+
+
+func _on_idle_time_timeout() -> void:
+	myDirection = Vector3.ZERO
+	print(myDirection)
+	linear_velocity = Vector3.ZERO
+	movementOrder += 1
+	movementActive = false

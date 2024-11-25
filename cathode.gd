@@ -83,4 +83,7 @@ func _on_beam_hold_timeout() -> void:
 
 
 func _on_area_3d_area_entered(area: Area3D) -> void:
+	if activeBeam != null:
+		activeBeam.call_deferred("queue_free")
+		beamMult = 1
 	call_deferred("queue_free")
