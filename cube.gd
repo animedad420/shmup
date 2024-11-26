@@ -17,16 +17,17 @@ var movementOrder: int = 1
 var movementActive: bool
 
 func _ready() -> void:
-	movementQueue = {
-		1:{"IDLE":4.0},
-		2:{"MOVE":Vector3(3,0,1.2)},
-		3:{"IDLE":4.0},
-		4:{"MOVE":Vector3(-3,0,1.2)},
-		5:{"IDLE":0.5},
-		6:{"MOVE":Vector3(3,0,0.4)},
-		7:{"MOVE":Vector3(-1,-2,0.4)},
-		8:{"MOVE":Vector3(3,0,0.4)}
-	}
+	pass
+	#movementQueue = {
+		#1:{"IDLE":4.0},
+		#2:{"MOVE":Vector3(3,0,1.2)},
+		#3:{"IDLE":4.0},
+		#4:{"MOVE":Vector3(-3,0,1.2)},
+		#5:{"IDLE":0.5},
+		#6:{"MOVE":Vector3(3,0,0.4)},
+		#7:{"MOVE":Vector3(-1,-2,0.4)},
+		#8:{"MOVE":Vector3(3,0,0.4)}
+	#}
 
 func _physics_process(delta: float) -> void:
 	$Cube.rotate_x(1.2*delta)
@@ -37,15 +38,26 @@ func _physics_process(delta: float) -> void:
 func _process(delta: float) -> void:
 	if !movementActive:
 		if movementQueue.has(movementOrder):
+			
+			#IDLE - wait for next command
 			if movementQueue[movementOrder].has("IDLE"):
 				#print(movementQueue[movementOrder]["IDLE"])
 				$IdleTime.start(movementQueue[movementOrder]["IDLE"])
+			
+			#MOVE - move to point in world (xy) in specified time (z)
 			if movementQueue[movementOrder].has("MOVE"):
 				var pos = $".".global_position
 				pos.x += movementQueue[movementOrder]["MOVE"].x
 				pos.y += movementQueue[movementOrder]["MOVE"].y
 				$IdleTime.start(movementQueue[movementOrder]["MOVE"].z)
-				myDirection = (pos - $".".global_position).normalized()
+				#myDirection = (pos - $".".global_position).normalized()
+				myDirection = $".".global_position.direction_to(pos)
+				#print($".".global_position.distance_to(pos))
+				speed = $".".global_position.distance_to(pos)/movementQueue[movementOrder]["MOVE"].z
+				#print($".".global_position.x)
+			
+			#LERP - MOVE with linear interpolation
+			#if movementQueue[movementOrder].has("LERP"):
 			movementActive = true
 		else: movementOrder = 1
 
@@ -116,7 +128,8 @@ func update_player(node):
 
 func _on_idle_time_timeout() -> void:
 	myDirection = Vector3.ZERO
-	print(myDirection)
+	#print(myDirection)
+	#print($".".global_position.x)
 	linear_velocity = Vector3.ZERO
 	movementOrder += 1
 	movementActive = false
