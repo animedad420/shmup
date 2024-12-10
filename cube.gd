@@ -58,6 +58,10 @@ func _process(delta: float) -> void:
 			
 			#LERP - MOVE with linear interpolation
 			#if movementQueue[movementOrder].has("LERP"):
+			
+			#LOOP - Return to specific point in movement order
+			
+			
 			movementActive = true
 		else: movementOrder = 1
 

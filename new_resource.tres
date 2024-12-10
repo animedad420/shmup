@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="CustomResource" load_steps=2 format=3 uid="uid://3dgyu8k5na7h"]
+
+[ext_resource type="Script" path="res://resource_test_script.gd" id="1_vnqnm"]
+
+[resource]
+script = ExtResource("1_vnqnm")
+testVar = {
+1: {
+"IDLE": 1.0
+},
+2: {
+"MOVE": Vector3(3, 0, 1.2)
+},
+3: {
+"IDLE": 1.0
+},
+4: {
+"MOVE": Vector3(-3, 0, 1.2)
+},
+5: {
+"IDLE": 2.0
+},
+6: {
+"MOVE": Vector3(3, 0, 0.4)
+},
+7: {
+"MOVE": Vector3(-1, -2, 0.4)
+},
+8: {
+"MOVE": Vector3(3, 0, 0.4)
+}
+}
